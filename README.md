@@ -9,7 +9,7 @@ Elle permet d'effectuer des opérations **CRUD** (Créer, Lire, Modifier, Suppri
 ---
 
 ## Fonctionnalités
-- **Ajout, Modification et Suppression de Contacts** : Gestion complète des contacts via une interface conviviale.  
+- **Ajout, Modification et Suppression de Contacts** : Gestion complète des contacts via une interface conviviale et triable.  
 - **Recherche Dynamique** : Filtrage instantané des contacts à l'aide d'une barre de recherche réactive.  
 - **Validation côté Serveur et client** : Vérification des données saisies pour éviter les erreurs.  
 - **API RESTful** : Points d'accès pour interagir avec le serveur.  
