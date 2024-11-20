@@ -1,5 +1,5 @@
-  // Fonction de tri
-  function sortTable(n) {
+// Fonction de tri
+function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById('contactsTable');
     switching = true;
@@ -45,3 +45,22 @@ $(document).ready(function () {
         $("#wrapper").toggleClass("toggled");
     });
 });
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const currentPath = window.location.pathname.split("/").pop();
+    const menuItems = document.querySelectorAll(".list-group-item");
+
+    menuItems.forEach(item => {
+        const hrefPath = item.getAttribute("href").split("/").pop();
+        if (currentPath === hrefPath) {
+            item.classList.add("active");
+        } else {
+            item.classList.remove("active");
+        }
+    });
+});
+
+

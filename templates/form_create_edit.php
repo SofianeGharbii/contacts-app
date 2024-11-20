@@ -42,7 +42,7 @@ if ($action == 'update' && isset($_GET['id'])) {
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">Gestion des Contacts</div>
             <div class="list-group list-group-flush">
-                <a href="../index.html" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+                <a href="../index.html" class="list-group-item list-group-item-action bg-dark">Dashboard</a>
                 <a href="form_create_edit.php?action=create"
                     class="list-group-item list-group-item-action bg-light">Ajouter un contact</a>
             </div>
@@ -77,8 +77,11 @@ if ($action == 'update' && isset($_GET['id'])) {
                 </div>
                 <div class="form-group">
                     <label for="country">Pays</label>
-                    <input type="text" class="form-control" name="country" id="country" placeholder="Pays" value="<?php echo $contact['country'] ?? ''; ?>" required>
+                    <select class="form-control" name="country" id="country" required>
+                        <option value="">-- Sélectionnez un pays --</option>
+                    </select>
                 </div>
+
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="<?php echo $contact['email'] ?? ''; ?>" required>
@@ -96,7 +99,39 @@ if ($action == 'update' && isset($_GET['id'])) {
         <script src="../assets/js/form-handler.js"></script>
         <script src="../assets/js/messages.js"></script>
 
+<script>
+    
+document.addEventListener("DOMContentLoaded", function () {
+    const countrySelect = document.getElementById("country");
 
+    // Récupérer la valeur du pays depuis PHP (le pays enregistré en base)
+    const selectedCountry = "<?php echo $contact['country'] ?? ''; ?>"; 
+
+    // Appeler l'API pour obtenir la liste des pays
+    fetch("https://restcountries.com/v3.1/all")
+        .then(response => response.json())
+        .then(data => {
+            // Trier les pays par nom
+            const countries = data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+
+            // Ajouter chaque pays comme option
+            countries.forEach(country => {
+                const option = document.createElement("option");
+                option.value = country.name.common;
+                option.textContent = country.name.common;
+
+                // Si le pays est déjà sélectionné, le cocher
+                if (country.name.common === selectedCountry) {
+                    option.selected = true;
+                }
+
+                countrySelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error("Erreur lors de la récupération des pays :", error));
+});
+
+    </script>
 </body>
 
 </html>

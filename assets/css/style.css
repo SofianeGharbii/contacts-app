@@ -64,8 +64,8 @@ body {
 }
 
 #sidebar-wrapper .sidebar-heading {
-    padding: 0.875rem 1.25rem;
-    font-size: 1.2rem;
+    padding: 1.875rem 1.25rem;
+    font-size: 1.3rem;
 }
 
 #sidebar-wrapper .list-group {
@@ -130,4 +130,28 @@ body {
         opacity: 0;
         transform: translateY(-10px);
     }
+}
+
+/* Style pour le lien actif dans le menu */
+.list-group-item.active {
+    background-color: #007bff; /* Couleur du lien actif */
+    color: white;
+}
+
+/* Style pour le bouton Éditer */
+.btn-edit {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Style pour le bouton Supprimer */
+.btn-delete {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
 }

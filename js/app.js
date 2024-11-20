@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${contact.email}</td>
                         <td>${contact.phone_number}</td>
                         <td>
-                            <a href="templates/form_create_edit.php?action=edit&id=${contact.id}">Éditer</a> |
-                            <a href="#" onclick="deleteContact(${contact.id})">Supprimer</a>
+                            <a href="templates/form_create_edit.php?action=edit&id=${contact.id}" class="btn-edit">Éditer</a> |
+                            <a href="#" onclick="deleteContact(${contact.id})" class="btn-delete">Supprimer</a>
                         </td>
                     </tr>`;
                     tbody.innerHTML += row;
