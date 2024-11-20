@@ -15,6 +15,9 @@ Elle permet d'effectuer des opérations **CRUD** (Créer, Lire, Modifier, Suppri
 - **API RESTful** : Points d'accès pour interagir avec le serveur.  
 - **Compatibilité Multi-Plateformes** : Prise en charge de **Linux** et **Windows**.  
 
+Un serveur public est disponible pour tester l'application :  
+**http://contacts-app.ct.ws/index.html**
+
 ---
 
 ## Prérequis
@@ -35,3 +38,10 @@ branch master
 - Dans le dossier database, un script automatisé est inclus. Exécutez-le pour configurer la base de données et table contacts :
 
 php database/create_db_and_table.php
+
+
+### Étape 3 : Démarrer le serveur local
+
+- Sous Windows (avec XAMPP) :
+- Lancer XAMPP (Apache et MySQL activés).
+- Accéder au projet via **http://localhost/contact-app/index.html**
