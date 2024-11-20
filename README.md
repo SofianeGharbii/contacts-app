@@ -19,7 +19,8 @@ Elle permet d'effectuer des opérations **CRUD** (Créer, Lire, Modifier, Suppri
 
 ## Prérequis
 - **PHP 8**  
-- Un serveur web (**Apache** ou **Nginx**)  
+- **MySQL**  
+- Un serveur web (**Apache** )  
 
 ---
 
@@ -33,4 +34,4 @@ branch master
 ### Étape 2 : Créer la base de données et les tables
 - Dans le dossier database, un script automatisé est inclus. Exécutez-le pour configurer la base de données et table contacts :
 ```bash
-php database/create_db_and_table.phpbash
+php database/create_db_and_table.php
