@@ -5,10 +5,8 @@ function showMessage(message, type = 'success') {
     messageDiv.className = `popup-message ${type}`;
     messageDiv.textContent = message;
 
-    // Ajouter la popup au corps du document
     document.body.appendChild(messageDiv);
 
-    // Supprimer automatiquement la popup après 3 secondes
     setTimeout(() => {
         document.body.removeChild(messageDiv);
     }, 3000);
