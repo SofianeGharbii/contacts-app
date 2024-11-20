@@ -13,7 +13,7 @@ Elle permet d'effectuer des opérations **CRUD** (Créer, Lire, Modifier, Suppri
 - **Recherche Dynamique** : Filtrage instantané des contacts à l'aide d'une barre de recherche réactive.  
 - **Validation côté Serveur et client** : Vérification des données saisies pour éviter les erreurs.  
 - **API RESTful** : Points d'accès pour interagir avec le serveur.  
-- **Compatibilité Multi-Plateformes** : Prise en charge de **Linux** et **Windows**.  
+- **systeme utilisé** : **Windows**.  
 
 Un serveur public est disponible pour tester l'application :  
 **http://contacts-app.ct.ws/index.html**
@@ -23,7 +23,8 @@ Un serveur public est disponible pour tester l'application :
 ## Prérequis
 - **PHP 8**  
 - **MySQL 5.7 ou supérieur**  
-- Un serveur web (**Apache** ou **Nginx**)  
+- Un serveur web (**Apache** ou **Nginx**)
+- fonctionner sur Linux et Windows
 
 ---
 
