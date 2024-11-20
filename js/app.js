@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fonction de recherche dynamique dans le tableau des contacts
     document.getElementById('searchBox').addEventListener('keyup', searchTable);
 
-    // Fonction pour charger les contacts
-    function loadContacts() {
-        fetch('src/contacts.php?action=read')
+    // Charger les contacts depuis le serveur
+    function loadContacts(searchTerm = '') {
+        fetch(`src/contacts.php?action=read&search=${searchTerm}`)
             .then(response => response.json())
             .then(data => {
                 let tbody = document.getElementById('contactsBody');
@@ -22,41 +22,33 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${contact.phone_number}</td>
                         <td>
                             <a href="templates/form_create_edit.php?action=edit&id=${contact.id}">Éditer</a> |
-                            <a href="src/contacts.php?action=delete&id=${contact.id}" onclick="return confirm('Voulez-vous vraiment supprimer ce contact ?')">Supprimer</a>
+                            <a href="#" onclick="deleteContact(${contact.id})">Supprimer</a>
                         </td>
                     </tr>`;
                     tbody.innerHTML += row;
                 });
             })
-            .catch(error => console.error('Erreur lors du chargement des contacts:', error));
+            .catch(error => showMessage('Erreur lors du chargement des contacts.', 'error'));
     }
+
+    // Supprimer un contact
+    window.deleteContact = function (id) {
+        if (confirm('Voulez-vous vraiment supprimer ce contact ?')) {
+            fetch(`src/contacts.php?action=delete&id=${id}`, { method: 'GET' })
+                .then(response => response.text())
+                .then(data => {
+                    showMessage(data, 'success');
+                    loadContacts(); // Recharger la liste des contacts
+                })
+                .catch(error => showMessage('Erreur lors de la suppression du contact.', 'error'));
+        }
+    };
 
     // Fonction de recherche dynamique dans le tableau des contacts
     function searchTable() {
         let input = document.getElementById("searchBox");
-        let filter = input.value.toLowerCase();
-        let table = document.getElementById("contactsTable");
-        let tr = table.getElementsByTagName("tr");
-
-        for (let i = 1; i < tr.length; i++) { // Ignorer la première ligne (en-têtes)
-            let td = tr[i].getElementsByTagName("td");
-            let found = false;
-            
-            for (let j = 0; j < td.length - 1; j++) { // Ignorer la dernière colonne (Actions)
-                if (td[j]) {
-                    let txtValue = td[j].textContent || td[j].innerText;
-                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                        found = true;
-                    }
-                }
-            }
-
-            if (found) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
+        let searchTerm = input.value.trim().toLowerCase();
+        loadContacts(searchTerm); // Recharger les contacts avec le terme de recherche
     }
 
     // Vérifier si on est dans le formulaire de création/édition
@@ -69,33 +61,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let formData = new FormData(this);
 
-            // Effectuer la requête AJAX pour envoyer les données à `contacts.php`
+            // Effectuer la requête AJAX pour envoyer les données
             let url = action === 'create' ? 'src/contacts.php' : `src/contacts.php?action=update&id=${formData.get('id')}`;
             fetch(url, {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.text())
-            .then(data => {
-                alert(data);
-                if (data.includes('réussi')) {
-                    window.location.href = 'index.html'; // Rediriger vers la page principale après l'action réussie
-                }
-            })
-            .catch(error => console.error('Erreur lors de l\'envoi du formulaire:', error));
+                .then(response => response.text())
+                .then(data => {
+                    showMessage(data, 'success');
+                    setTimeout(() => window.location.href = 'index.html', 1500); // Rediriger après un succès
+                })
+                .catch(error => showMessage('Erreur lors de l\'envoi du formulaire.', 'error'));
         });
 
-        // Si c'est un formulaire d'édition, charger les données existantes
+        // Charger les données existantes si formulaire d'édition
         if (action === 'update') {
             let urlParams = new URLSearchParams(window.location.search);
             let contactId = urlParams.get('id');
 
-            // Charger les données du contact pour l'édition
             fetch(`src/contacts.php?action=read&id=${contactId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data) {
-                        // Remplir le formulaire avec les données récupérées
                         document.getElementById('first_name').value = data.first_name;
                         document.getElementById('last_name').value = data.last_name;
                         document.getElementById('age').value = data.age;
@@ -103,10 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         document.getElementById('email').value = data.email;
                         document.getElementById('phone_number').value = data.phone_number;
                     } else {
-                        alert('Aucun contact trouvé pour cet ID.');
+                        showMessage('Aucun contact trouvé pour cet ID.', 'error');
                     }
                 })
-                .catch(error => console.error('Erreur lors du chargement du contact:', error));
+                .catch(error => showMessage('Erreur lors du chargement du contact.', 'error'));
         }
     }
 });

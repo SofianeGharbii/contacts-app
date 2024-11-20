@@ -4,7 +4,8 @@ include 'ContactManager.php';
 
 $contactManager = new ContactManager($conn);
 
-function validateContactData($data) {
+function validateContactData($data)
+{
     $errors = [];
 
     // Validation du prénom
@@ -33,15 +34,16 @@ function validateContactData($data) {
     }
 
     // Validation du numéro de téléphone
-    if (empty($data['phone_number']) || !preg_match('/^[0-9]{10}$/', $data['phone_number'])) {
-        $errors[] = 'Un numéro de téléphone valide est requis (10 chiffres).';
+    if (empty($data['phone_number']) || !preg_match('/^[0-9]{8}$/', $data['phone_number'])) {
+        $errors[] = 'Un numéro de téléphone valide est requis (8 chiffres).';
     }
 
     return $errors;
 }
 
 // Fonction pour renvoyer une réponse JSON
-function jsonResponse($success, $errors = []) {
+function jsonResponse($success, $errors = [])
+{
     echo json_encode(['success' => $success, 'errors' => $errors]);
     exit;
 }
@@ -60,7 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     $errors = validateContactData($data);
 
     if (empty($errors)) {
-        if ($contactManager->createContact($data)) {
+        $result = $contactManager->createContact($data);
+
+        if (is_array($result) && isset($result['error'])) {
+            jsonResponse(false, [$result['error']]);
+        } elseif ($result) {
             jsonResponse(true);
         } else {
             jsonResponse(false, ["Erreur: Impossible d'ajouter le contact"]);
@@ -70,11 +76,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     }
 }
 
-// Lire tous les contacts
+
+// Lire tous les contacts ou avec filtre de recherche
 if (isset($_GET['action']) && $_GET['action'] == 'read') {
-    $contacts = $contactManager->getAllContacts();
+    // Vérifier si un terme de recherche est passé
+    $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+    $contacts = $contactManager->getAllContacts($searchTerm);
     echo json_encode($contacts);
 }
+
 
 // Mettre à jour un contact
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'update') {
@@ -111,5 +121,17 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete') {
         jsonResponse(false, ["Erreur: Impossible de supprimer le contact"]);
     }
 }
+
+if (isset($_GET['action']) && $_GET['action'] == 'search') {
+    $searchTerm = $_GET['query'];
+    // Exemple de requête SQL pour chercher les contacts correspondant
+    $query = "SELECT * FROM contacts WHERE first_name LIKE ? OR last_name LIKE ? OR country LIKE ? OR email LIKE ?";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(["%$searchTerm%", "%$searchTerm%", "%$searchTerm%", "%$searchTerm%"]);
+    $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($contacts);
+    exit;
+}
+
 
 $conn = null; // Fermer la connexion

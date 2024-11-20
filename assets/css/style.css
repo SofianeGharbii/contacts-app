@@ -90,3 +90,44 @@ body {
         margin-left: -15rem;
     }
 }
+#errorMessages {
+    margin-top: 20px;
+    color: red;
+    font-weight: bold;
+    border: 1px solid red;
+    padding: 10px;
+    background-color: #fdd;
+    border-radius: 5px;
+}
+.popup-message {
+    position: fixed;
+    top: 10%;
+    right: 10%;
+    padding: 15px 20px;
+    background-color: #4caf50; /* Couleur par défaut (succès) */
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: fadeInOut 3s ease;
+}
+
+.popup-message.error {
+    background-color: #f44336; /* Couleur pour les erreurs */
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    10%, 90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}

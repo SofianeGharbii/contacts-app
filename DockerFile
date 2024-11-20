@@ -1,0 +1,32 @@
+# Use an official PHP image as the base image
+FROM php:8.2-apache
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Install required system packages and PHP extensions
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    && docker-php-ext-install zip pdo_mysql mysqli \
+    && docker-php-ext-enable pdo_mysql mysqli
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copy project files into the container
+COPY . /var/www/html
+
+# Set proper permissions for Apache
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
+
+# Expose port 80 for the container
+EXPOSE 80
+
+# Start Apache server
+CMD ["apache2-foreground"]

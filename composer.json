@@ -1,0 +1,15 @@
+{
+    "name": "sofiane/contact-app",
+    "autoload": {
+        "psr-4": {
+            "Sofiane\\ContactApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SofianeGharbii",
+            "email": "gharbi.gh.sofiane@gmail.com"
+        }
+    ],
+    "require": {}
+}
